@@ -1,172 +1,194 @@
-#include<iostream>
-#include<cstdlib>
-
-#define INIT_SIZE 100 
-#define INCREMENT 10 
-
+#include<stdio.h>
+#include<stdlib.h>
+#include "../base.h"
+#define LIST_INIT_SIZE 100
+#define LISTINCREMENT 10
+typedef int ElemType;
 typedef struct{
-	int * data;
+	ElemType *elem;
 	int length;
 	int listsize;
 }SqList;
 
-using namespace std;
-
-/*³õÊ¼»¯Ë³Ğò±í*/
-void InitList(SqList &L){
-	L.data = (int *)malloc(INIT_SIZE * sizeof(int));
+//åˆå§‹åŒ–é¡ºåºè¡¨
+Status InitList(SqList &L){
+	L.elem = (ElemType*)malloc(LIST_INIT_SIZE * sizeof(ElemType));
+	if(!L.elem)
+		exit(OVERFLOW);
 	L.length = 0;
-	L.listsize = INIT_SIZE;
+	L.listsize = LIST_INIT_SIZE;
+	return OK;
 }
 
-/*Êä³öË³Ğò±íÖĞµÄÔªËØ*/
-void ShowList(SqList &L){
-	if(L.length == 0)
-		cout << "Ë³Ğò±íÎª¿Õ\n";
-	for(int i = 0;i < L.length;i++)
-		cout << L.data[i] << " ";
-}
-
-/*ÏòË³Ğò±íÖĞ²åÈëÒ»¸öÔªËØ*/
-void InsertData(SqList &L,int location,int data){
-	if(location < 1 || location > L.length + 1){
-		cout << "²åÈëÎ»ÖÃ²»ÕıÈ·\n";
-		return;
-	}
-	if(L.length == L.listsize){
-		L.data = (int *)realloc(L.data,(L.listsize + INCREMENT) * sizeof(int));
-		L.listsize += INCREMENT;
-	}
-	for(int p = L.length - 1;p >= location - 1;p--)
-		L.data[p + 1] = L.data[p];
-	L.data[location - 1] = data;
-	L.length += 1;
-}
-
-/*´ÓË³Ğò±íÖĞÉ¾³ıÒ»¸öÔªËØ*/
-void DeleteData(SqList &L,int location,int &data){
-	if(location < 1 || location > L.length){
-		cout << "É¾³ıÎ»ÖÃ´íÎó\n";
-		return;
-	}
-	for(int i = location - 1;i < L.length - 1;i++)
-		L.data[i] = L.data[i + 1];
-	L.length--;
-}
-
-/*É¾³ıË³Ğò±íÖĞÖµÎªxµÄÔªËØ*/
-void delete_x(SqList &L,int x){
-	int k = 0;
-	for(int i = 0;i < L.length;i++){
-		if(L.data[i] != x){
-			L.data[k++] = L.data[i];
-		}
-	}
-	L.length = k;
-}
-
-/*µ¹ÖÃËùÓĞÔªËØ*/
-void ReverseList(SqList &L,int start,int end){
-	int mid = (end - start) / 2;
-	for(int i = 0;i <= mid;i++){
-		int temp = L.data[start + i];
-		L.data[start + i] = L.data[end - i];
-		L.data[end - i] = temp;
+//é”€æ¯é¡ºåºè¡¨
+Status DestroyList(SqList &L){
+	if(L.elem){
+		free(L.elem);
+		return OK;
 	}
 }
 
-/*½»»»Ë³Ğò±íÖĞÇ°ºóÁ½²¿·ÖµÄÎ»ÖÃ*/
-void exchange(SqList &L,int p){	//pÎªÇ°Ò»²¿·ÖÔªËØ¸öÊı
-	ReverseList(L,0,p - 1);	//µ¹ÖÃÇ°p¸öÔªËØ
-	ReverseList(L,p,L.length - 1); //µ¹ÖÃÊ£ÓàÔªËØ
-	ReverseList(L,0,L.length - 1);	//µ¹ÖÃË³Ğò±íËùÓĞÔªËØ
+//æ¸…ç©ºé¡ºåºè¡¨
+Status ClearList(SqList &L){
+	L.length = 0;
+	return OK;
 }
 
-/*ÕÒ³öÁ½¸öÉıĞòĞòÁĞµÄÖĞÎ»Êı*/
-int find_mid(SqList &L1,SqList &L2){
-	int s1 = 0,d1 = L1.length - 1,m1,s2 = 0,d2 = L2.length - 1,m2;
-	while(s1 != d1 || s2 != d2){
-		m1 = (s1 + d1) / 2;
-		m2 = (s2 + d2) / 2;
-		if(L1.data[m1] == L2.data[m2])
-			return L1.data[m1];
-		else if(L1.data[m1] < L2.data[m2]){
-			if((s1 + d1) % 2 == 0){
-				s1 = m1;
-				d2 = m2;	
-			}
-			else{
-				s1 = m1 + 1;
-				d2 = m2;
-			}
-		}
-		else{
-			if((s2 + d2) % 2 == 0){
-				d1 = m1;
-				s2 = m2;
-			}
-			else{
-				d1 = m1;
-				s2 = m2 + 1;
-			}
-		}
-	}
-	return L1.data[s1] <= L2.data[s2] ? L1.data[s1]:L2.data[s2];
+//è·å–é¡ºåºè¡¨é•¿åº¦
+int ListLength(SqList L){
+	return L.length;
 }
 
-void main(){
-	SqList L1,L2;	
-	int n;
-	cout << "ÊäÈë³õÊ¼»¯Ë³Ğò±íÖĞÔªËØ¸öÊı: ";
-	cin >> n;
-	cout << "\nÊäÈëÕâ" << n << "¸öÔªËØ:\n";
-
-	InitList(L1);	//³õÊ¼»¯
-	InitList(L2);
-	for(int i = 1;i <= n;i++){	//²åÈëÔ­Ê¼Êı¾İ
-		int temp;
-		cin >> temp;
-		InsertData(L1,i,temp);
+//åˆ¤æ–­é¡ºåºè¡¨æ˜¯å¦ä¸ºç©º
+int ListEmpty(SqList L){
+	if(L.length == 0){
+		return TRUE;
+	}else{
+		return FALSE;
 	}
-	ShowList(L1);
-	for(i = 1;i <= n;i++){	//²åÈëÔ­Ê¼Êı¾İ
-		int temp;
-		cin >> temp;
-		InsertData(L2,i,temp);
-	}
-	ShowList(L2);
-	cout << find_mid(L1,L2);
-	/*int location;
-	int data;
-	char operation;
-	bool flag = true;
-	cout << "\nÑ¡Ôñ²Ù×÷ÀàĞÍ(²åÈë:i,É¾³ı:d,ÍË³ö:q):";
-	getchar();
-	while(flag){		
-		switch(getchar()){
-		case 'i':
-			cout << "\nÊäÈë²åÈëÎ»ÖÃ:";
-			cin >> location;
-			cout << "\nÊäÈë²åÈëÔªËØ:";
-			cin >> data;
-			InsertData(L,location,data);
-			ShowList(L);
-			break;
-		case 'd':
-			cout << "ÊäÈëÉ¾³ıÎ»ÖÃ:";
-			cin >> location;
-			DeleteData(L,location,data);
-			ShowList(L);
-			break;
-		case 'q':
-			flag = false;
-			break;
-		default:
-			break;
-		}
-		
-		cout << "\nÑ¡Ôñ²Ù×÷ÀàĞÍ(²åÈë:i,É¾³ı:d,ÍË³ö:q):";getchar();
-	}*/
 }
 
+//å°†ç¬¬iä¸ªå…ƒç´ çš„å€¼èµ‹ç»™e
+Status GetElem(SqList L,int i,ElemType &e){
+	if(i < 1 || i > ListLength(L)){
+		exit(OVERFLOW);
+	}
+	int k;
+	e = L.elem[i - 1];
+	return OK;
+}
+int compare(ElemType e1,ElemType e2){
+    if(e1 < e2){
+        return -1;
+    }else if(e1 == e2){
+        return 0;
+    }else{
+        return 1;
+    }
+}
+
+//è¿”å›Lä¸­ç¬¬1ä¸ªä¸eæ»¡è¶³compareçš„æ•°æ®å…ƒç´ çš„ä½ç½®
+Status LocateElem(SqList L,ElemType e,int (*compare)(ElemType arg1,ElemType arg2)){
+    int i,t;
+    int length = ListLength(L);
+    for(i = 1;i <= length;i++){
+        GetElem(L,i,t);
+        if(compare(e,t) == 0){
+            return i;
+        }
+    }
+    if(i > length){
+        return 0;
+    }
+}
+
+//è¿”å›å‰é©±å…ƒç´ 
+Status PriorElem(SqList L,ElemType cur_e,ElemType &e){
+    ElemType current;
+    GetElem(L,1,current);
+    if(cur_e == current){
+        return ERROR;
+    }
+    int length = ListLength(L);
+    int i;
+    for(i = 2;i <= length;i++){
+        GetElem(L,i,current);
+        if(current == cur_e){
+            GetElem(L,i - 1,e);
+            return OK;
+        }
+    }
+    if(i > length){
+        return ERROR;
+    }
+}
+
+//è¿”å›åç»§å…ƒç´ 
+Status NextElem(SqList L,ElemType cur_e,ElemType &e){
+    int length = ListLength(L);
+    ElemType current;
+    GetElem(L,length,current);
+    if(cur_e == current){
+        return ERROR;
+    }
+    int i;
+    for(i = 1;i < length;i++){
+        GetElem(L,i,current);
+        if(current == cur_e){
+            GetElem(L,i + 1,e);
+            return OK;
+        }
+    }
+    if(i >= length){
+        return ERROR;
+    }
+}
+
+//åœ¨Lä¸­ç¬¬iä¸ªä½ç½®ä¹‹å‰æ’å…¥å…ƒç´ e
+Status ListInsert(SqList &L,int i,ElemType e){
+    if(i < 1 || i > L.length + 1){
+        return ERROR;
+    }
+    if(L.length >= L.listsize){
+        ElemType *newbase = (ElemType*)realloc(L.elem,(L.listsize + LISTINCREMENT) * sizeof(ElemType));
+        if(!newbase){
+            exit(OVERFLOW);
+        }
+        L.elem = newbase;
+        L.listsize += LISTINCREMENT;
+    }
+    int j;
+    for(j = L.length - 1;j >= i - 1;j--){
+        L.elem[j + 1] = L.elem[j];
+    }
+    L.elem[i - 1] = e;
+    L.length++;
+    return OK;
+}
+
+//åˆ é™¤Lä¸­ç¬¬iä¸ªå…ƒç´ 
+Status ListDelete(SqList &L,int i,ElemType &e){
+    if(i < 1 || i > L.length){
+        return ERROR;
+    }
+    GetElem(L,i,e);
+    int j;
+    for(j = i - 1;j < L.length - 1;j++){
+        L.elem[j] = L.elem[j + 1];
+    }
+    L.length--;
+    return OK;
+}
+
+void print(ElemType e){
+    printf("%d ",e);
+}
+
+Status ListTraverse(SqList L,void (*visit)(ElemType e)){
+    int i;
+    ElemType data;
+    int length = ListLength(L);
+    for(i = 1;i <= length;i++){
+        GetElem(L,i,data);
+        visit(data);
+    }
+    printf("\n");
+    return OK;
+}
+int main(){
+    SqList L;
+    InitList(L);
+    int i;
+    for(i = 1;i <= 151;i++){
+        ListInsert(L,i,i * 2);
+    }
+    printf("length=%d\n",ListLength(L));
+    int e;
+    ListDelete(L,11,e);
+    ListDelete(L,12,e);
+    printf("length=%d\n",ListLength(L));
+    ListTraverse(L,print);
+
+    return OK;
+}
 
