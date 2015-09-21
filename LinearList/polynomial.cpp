@@ -118,20 +118,3 @@ void MultiPolyn(polynomial &Pa,polynomial &Pb){
 	Pa = qd;
 	free(Pb);
 }
-
-int main(){
-	polynomial Pa,Pb;
-	int m;
-	printf("输入多项式Pa的项数m\n");
-	scanf("%d",&m);
-	printf("\n输入Pa每项的项数和指数\n");
-	CreatePolyn(Pa,m);
-	PrintPolyn(Pa);
-	printf("输入多项式Pb的项数m\n");
-	scanf("%d",&m);
-	printf("\n输入Pb每项的项数和指数\n");
-	CreatePolyn(Pb,m);
-	PrintPolyn(Pb);
-	AddPolyn(Pa,Pb);
-	PrintPolyn(Pa);
-}
