@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include "../base.h"
-typedef int ElemType;
+//typedef int ElemType;
 typedef struct LNode{
     ElemType data;
     struct LNode *next;
