@@ -175,6 +175,7 @@ Status ListTraverse(SqList L,void (*visit)(ElemType e)){
     printf("\n");
     return OK;
 }
+/*
 int main(){
     SqList L;
     InitList(L);
@@ -191,4 +192,4 @@ int main(){
 
     return OK;
 }
-
+*/
