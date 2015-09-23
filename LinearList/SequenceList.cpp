@@ -175,21 +175,3 @@ Status ListTraverse(SqList L,void (*visit)(ElemType e)){
     printf("\n");
     return OK;
 }
-/*
-int main(){
-    SqList L;
-    InitList(L);
-    int i;
-    for(i = 1;i <= 151;i++){
-        ListInsert(L,i,i * 2);
-    }
-    printf("length=%d\n",ListLength(L));
-    int e;
-    ListDelete(L,11,e);
-    ListDelete(L,12,e);
-    printf("length=%d\n",ListLength(L));
-    ListTraverse(L,print);
-
-    return OK;
-}
-*/
