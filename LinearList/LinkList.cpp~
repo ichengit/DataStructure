@@ -7,8 +7,8 @@ typedef struct LNode{
     struct LNode *next;
 }LNode,*LinkList;
 
-//åˆå§‹åŒ–é“¾è¡¨
-Status InitList(LinkList &L){//æ­¤å¤„å‚æ•°ä¸º&Lï¼Œå¦åˆ™ä¸èƒ½ç»™Lèµ‹å€¼
+//³õÊ¼»¯Á´±í
+Status InitList(LinkList &L){//´Ë´¦²ÎÊýÎª&L£¬·ñÔò²»ÄÜ¸øL¸³Öµ
     L = (LinkList)malloc(sizeof(LNode));
     if(!L){
         exit(OVERFLOW);
@@ -16,7 +16,7 @@ Status InitList(LinkList &L){//æ­¤å¤„å‚æ•°ä¸º&Lï¼Œå¦åˆ™ä¸èƒ½ç»™Lèµ‹å€¼
     L->next = NULL;
     return OK;
 }
-//èŽ·å–ç¬¬iä¸ªå…ƒç´ 
+//»ñÈ¡µÚi¸öÔªËØ
 Status GetElem(LinkList L,int i,ElemType &e){
     int j = 1;
     LNode *p = L->next;
@@ -31,7 +31,7 @@ Status GetElem(LinkList L,int i,ElemType &e){
     return OK;
 }
 
-//åœ¨ç¬¬iä¸ªå…ƒç´ å‰æ’å…¥e
+//ÔÚµÚi¸öÔªËØÇ°²åÈëe
 Status ListInsert(LinkList L,int i,ElemType e){
     int j = 0;
     LNode *p = L;
@@ -49,7 +49,7 @@ Status ListInsert(LinkList L,int i,ElemType e){
     return OK;
 }
 
-//åˆ é™¤ç¬¬iä¸ªå…ƒç´ 
+//É¾³ýµÚi¸öÔªËØ
 Status ListDelete(LinkList L,int i,ElemType &e){
     int j = 0;
     LNode *p = L;
@@ -70,7 +70,7 @@ Status ListDelete(LinkList L,int i,ElemType &e){
 void print(ElemType e){
     printf("%d ",e);
 }
-//éåŽ†é“¾è¡¨
+//±éÀúÁ´±í
 Status ListTraverse(LinkList L,void (*visit)(ElemType e)){
     LNode *p = L->next;
     while(p){

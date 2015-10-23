@@ -26,7 +26,7 @@ void push(Stack &stack,ElemType data){
 
 void pop(Stack &stack,ElemType &data){
 	if(stack.base == stack.top){
-		cout << "栈为空\n";
+		cout << "鏍堜负绌篭n";
 		return;
 	}
 	data = *(--stack.top);
@@ -62,7 +62,7 @@ void traverse(Stack stack){
 	while(stack.base < stack.top)
 		cout << *stack.base++;
 }
-void conversion(int n,int radix){	//进制转换，此时需把ElemType置为int
+void conversion(int n,int radix){	//杩涘埗杞崲锛屾鏃堕渶鎶奅lemType缃负int
 	Stack stack;
 	init(stack);
 	while(n){
@@ -73,11 +73,11 @@ void conversion(int n,int radix){	//进制转换，此时需把ElemType置为int
 	destroy(stack);
 }
 
-bool pattern(){	//括号匹配，此时需把ElemType置为char
+bool pattern(){	//鎷彿鍖归厤锛屾鏃堕渶鎶奅lemType缃负char
 	Stack stack;
 	init(stack);
 	char ch,last;
-	cout << "输入待匹配的括号序列:\n";
+	cout << "杈撳叆寰呭尮閰嶇殑鎷彿搴忓垪:\n";
 	while((ch = getchar()) != '\n'){
 		switch(ch){
 		case '[':
@@ -107,7 +107,7 @@ bool pattern(){	//括号匹配，此时需把ElemType置为char
 				return false;
 			break;
 		default:
-			cout << "输入有误\n";
+			cout << "杈撳叆鏈夎\n";
 			exit(-1);
 		}
 	}
