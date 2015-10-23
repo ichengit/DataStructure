@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include "../base.h"
-//typedef int ElemType;
+
 typedef struct LNode{
     ElemType data;
     struct LNode *next;
@@ -80,3 +80,25 @@ Status ListTraverse(LinkList L,void (*visit)(ElemType e)){
     printf("\n");
     return OK;
 }
+
+Status DestroyList(LinkList L){
+    LinkList p = L->next;
+    while(p){
+        free(p);
+        p = p->next;
+    }
+    free(L);
+    return OK;
+}
+
+Status ClearList(LinkList L){
+    LinkList p = L->next;
+    while(p){
+        free(p);
+        p = p->next;
+    }
+    L->next = NULL;
+    return OK;
+}
+
+

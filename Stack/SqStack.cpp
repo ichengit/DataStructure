@@ -90,6 +90,7 @@ void LineEdit(){
 			ch = getchar();
 		}
 		PrintStack(S);
+		ClearStack(S);
 		if(ch != '~'){
 			ch = getchar();
 		}
