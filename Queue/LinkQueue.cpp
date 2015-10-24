@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include "../base.h"
 typedef int ElemType;
-typedef struct Node
+typedef struct QNode
 {
-	ElemType data;
-	struct Node *next;
-}Node,*QueuePtr;
+	QElemType data;
+	struct QNode *next;
+}QNode,*QueuePtr;
 typedef struct
 {
 	QueuePtr front;
@@ -14,7 +14,7 @@ typedef struct
 }LinkQueue;
 
 Status InitQueue(LinkQueue &Q){
-	Q.front = Q.rear = (QueuePtr)malloc(sizeof(Node));
+	Q.front = Q.rear = (QueuePtr)malloc(sizeof(QNode));
 	if(!Q.front){
 		exit(OVERFLOW);
 	}
@@ -51,12 +51,12 @@ int QueueLength(LinkQueue Q){
 	return Q.rear - Q.front;
 }
 
-Status GetHead(LinkQueue Q,ElemType &e){
+Status GetHead(LinkQueue Q,QElemType &e){
 	e = Q.front->next->data;
 }
 
-Status EnQueue(LinkQueue &Q,ElemType e){
-	QueuePtr p = (QueuePtr)malloc(sizeof(Node));
+Status EnQueue(LinkQueue &Q,QElemType e){
+	QueuePtr p = (QueuePtr)malloc(sizeof(QNode));
 	if(!p){
 		exit(OVERFLOW);
 	}
@@ -67,7 +67,7 @@ Status EnQueue(LinkQueue &Q,ElemType e){
 	return OK;
 }
 
-Status DeQueue(LinkQueue &Q,ElemType &e){
+Status DeQueue(LinkQueue &Q,QElemType &e){
 	QueuePtr p = Q.front->next;
 	Q.front->next = p->next;
 	if(Q.rear == p){
