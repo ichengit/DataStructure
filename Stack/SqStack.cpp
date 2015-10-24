@@ -3,7 +3,7 @@
 #include "../base.h"
 #define STACK_INIT_SIZE 100
 #define STACKINCREMENT 10
-typedef char ElemType;
+
 typedef struct{
 	ElemType *base;
 	ElemType *top;
@@ -59,40 +59,4 @@ Status DestroyStack(SqStack &S){
 Status ClearStack(SqStack &S){
 	S.top = S.base;
 	return OK;
-}
-
-void PrintStack(SqStack &S){
-	ElemType *p = S.base;
-	while(p != S.top){
-		printf("%c",*p++);
-	}
-	printf("\n");
-}
-
-void LineEdit(){
-	SqStack S;
-	ElemType e;
-	InitStack(S);
-	char ch = getchar();
-	while(ch != '~'){
-		while(ch != '~' && ch != '\n'){
-			switch(ch){
-				case '#':
-					Pop(S,e);
-					break;
-				case '@':
-					ClearStack(S);
-					break;
-				default:
-					Push(S,ch);
-					break;
-			}
-			ch = getchar();
-		}
-		PrintStack(S);
-		ClearStack(S);
-		if(ch != '~'){
-			ch = getchar();
-		}
-	}
 }

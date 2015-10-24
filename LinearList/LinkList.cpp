@@ -101,4 +101,6 @@ Status ClearList(LinkList L){
     return OK;
 }
 
-
+int ListEmpty(LinkList L){
+    return L == NULL || L->next == NULL;
+}

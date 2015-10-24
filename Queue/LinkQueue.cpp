@@ -1,77 +1,78 @@
-#include<iostream>
-using namespace std;
+#include <stdio.h>
+#include <stdlib.h>
+#include "../base.h"
 typedef int ElemType;
-
-typedef struct node{
+typedef struct Node
+{
 	ElemType data;
-	struct node *next;
-}node,*QueuePtr;
-
-typedef struct{
+	struct Node *next;
+}Node,*QueuePtr;
+typedef struct
+{
 	QueuePtr front;
 	QueuePtr rear;
 }LinkQueue;
 
-void init(LinkQueue &queue){
-	queue.front = queue.rear = (node *)malloc(sizeof(node));
-	queue.front->next = NULL;
-}
-
-void destroy(LinkQueue &queue){
-	while(queue.front){
-		queue.rear = queue.front->next;
-		free(queue.front);
-		queue.front = queue.rear;
+Status InitQueue(LinkQueue &Q){
+	Q.front = Q.rear = (QueuePtr)malloc(sizeof(Node));
+	if(!Q.front){
+		exit(OVERFLOW);
 	}
+	Q.front->next = NULL;
+	return OK;
 }
 
-void EnQueue(LinkQueue &queue,ElemType data){
-	node * p = (QueuePtr)malloc(sizeof(node));
-	p->data = data;
-	p->next = NULL;
-	queue.rear->next = p;
-	queue.rear = p;
-}
-
-void DeQueue(LinkQueue &queue,ElemType &data){
-	if(queue.front == queue.rear)
-		return;
-	node *p = queue.front->next;
-	data = p->data;
-	queue.front->next = p->next;
-	if(p == queue.rear)
-		queue.rear = queue.front;
-	free(p);
-}
-
-void clear(LinkQueue &queue){
-	queue.rear = queue.front;
-}
-
-bool empty(LinkQueue &queue){
-	return queue.front == queue.rear;
-}
-
-int length(LinkQueue &queue){
-	int count = 0;
-	node *p = queue.front;
-	while(p->next){
-		count++;
-		p = p->next;
+Status DestroyQueue(LinkQueue &Q){
+	while(Q.front){
+		Q.rear = Q.front->next;
+		free(Q.front);
+		Q.front = Q.rear;
 	}
-	return count;
+	return OK;
 }
 
-void GetHead(LinkQueue &queue,ElemType &data){
-	if(queue.front != queue.rear)
-		data = queue.front->next->data;
-}
-
-void show(LinkQueue queue){
-	QueuePtr p = queue.front->next;
+Status ClearQueue(LinkQueue &Q){
+	QueuePtr p = Q.front->next;
 	while(p){
-		cout << p->data << " ";
-		p = p->next;
+		Q.rear = p->next;
+		free(p);
+		p = Q.rear;
 	}
+	Q.rear = Q.front;
+	Q.front->next = NULL;
+	return OK;
 }
 
+Status QueueEmpty(LinkQueue Q){
+	return Q.front == Q.rear;
+}
+
+int QueueLength(LinkQueue Q){
+	return Q.rear - Q.front;
+}
+
+Status GetHead(LinkQueue Q,ElemType &e){
+	e = Q.front->next->data;
+}
+
+Status EnQueue(LinkQueue &Q,ElemType e){
+	QueuePtr p = (QueuePtr)malloc(sizeof(Node));
+	if(!p){
+		exit(OVERFLOW);
+	}
+	p->data = e;
+	p->next = NULL;
+	Q.rear->next = p;
+	Q.rear = p;
+	return OK;
+}
+
+Status DeQueue(LinkQueue &Q,ElemType &e){
+	QueuePtr p = Q.front->next;
+	Q.front->next = p->next;
+	if(Q.rear == p){
+		Q.rear = Q.front;
+	}
+	free(p);
+	return OK;
+}

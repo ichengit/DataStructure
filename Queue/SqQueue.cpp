@@ -1,52 +1,61 @@
-#include<iostream>
-#include<cstdlib>
-using namespace std;
-#define MAXSIZE 100
-typedef int ElemType;
+#include <stdio.h>
+#include <stdlib.h>
+#include "../base.h"
+#define MAXQSIZE 100
+
 typedef struct{
 	ElemType *base;
 	int front;
 	int rear;
 }SqQueue;
 
-void init(SqQueue &queue){
-	queue.base = (ElemType*)malloc(MAXSIZE * sizeof(ElemType));
-	queue.front = queue.rear = 0;
+Status InitQueue(SqQueue &Q){
+	Q.base = (ElemType *)malloc(MAXQSIZE * sizeof(ElemType));
+	if(!Q.base){
+		exit(OVERFLOW);
+	}
+	Q.front = 0;
+	Q.rear = 0;
+	return OK;
 }
 
-int length(SqQueue queue){
-	return (queue.rear - queue.front + MAXSIZE) % MAXSIZE;
+Status DestroyQueue(SqQueue &Q){
+	free(Q.base);
+	return OK;
 }
 
-void EnQueue(SqQueue &queue,ElemType data){
-	if((queue.rear + 1) % MAXSIZE == queue.front)
-		return;
-	queue.base[queue.rear] = data;
-	queue.rear = (queue.rear + 1) % MAXSIZE;
+Status ClearQueue(SqQueue &Q){
+	Q.front = Q.rear = 0;
+	return OK;
 }
 
-void DeQueue(SqQueue &queue,ElemType &data){
-	if(queue.front == queue.rear)
-		return;
-	data = queue.base[queue.front];
-	queue.front = (queue.front + 1) % MAXSIZE;
+Status QueueEmpty(SqQueue Q){
+	return Q.front == Q.rear;
 }
 
-void show(SqQueue queue){
-	while(queue.front < queue.rear)
-		cout << queue.base[queue.front++] << " ";
+int QueueLength(SqQueue Q){
+	return (Q.rear - Q.front + MAXQSIZE) % MAXQSIZE;
 }
 
-void main(){
-	SqQueue queue;
-	int data;
-	init(queue);
-	for(int i = 0;i < 99;i++)
-		EnQueue(queue,i);
-	show(queue);
-	cout << "\nlength=" << length(queue) << "\n";
-	for(i = 0;i < 90;i++)
-		DeQueue(queue,data);
-	show(queue);
-	cout << "\nlength=" << length(queue) << "\n";
+Status GetHead(SqQueue &Q,ElemType &e){
+	e = Q.base[Q.front];
+	return OK;
+}
+
+Status EnQueue(SqQueue &Q,ElemType e){
+	if(Q.front == (Q.rear + 1) % MAXQSIZE){
+		return ERROR;
+	}
+	Q.base[Q.rear] = e;
+	Q.rear = (Q.rear + 1) % MAXQSIZE;
+	return OK;
+}
+
+Status DeQueue(SqQueue &Q,ElemType &e){
+	if(Q.front == Q.rear){
+		return ERROR;
+	}
+	e = Q.base[Q.front];
+	Q.front = (Q.front + 1) % MAXQSIZE;
+	return OK;
 }
